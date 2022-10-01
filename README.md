@@ -1,9 +1,6 @@
 # Golang Telegram Web Apps Init Data
 
-Telegram Web Apps init data GoLang library implementation. For more 
+Telegram Web Apps init data Golang library implementation. For more 
 information about init data, visit [this](https://github.com/heyqbnk/twa-init-data) link.
 
-## Contribution
-
-Any contribution is appreciated. Please, use already existed examples to 
-create new one.
+[Full documentation](https://pkg.go.dev/github.com/telegram-web-apps/init-data-golang).

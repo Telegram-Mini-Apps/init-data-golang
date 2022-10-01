@@ -1,3 +1,3 @@
-module github.com/heyqbnk/twa-init-data-golang
+module github.com/Telegram-Web-Apps/init-data-golang
 
 go 1.18
