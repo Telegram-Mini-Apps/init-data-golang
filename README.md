@@ -34,7 +34,7 @@ func main() {
 
 	// Will return error in case, init data is invalid. To see,
 	// which error could be returned, see errors.go file.
-	fmt.Println(twa.Validate(initData, token, expIn))
+	fmt.Println(initdata.Validate(initData, token, expIn))
 }
 ```
 
@@ -61,7 +61,7 @@ func main() {
 	// Will return 2 values.
 	// 1. Pointer to InitData in case, passed data has correct format.
 	// 2. Error in case, something is wrong. 
-	fmt.Println(twa.Parse(initData))
+	fmt.Println(initdata.Parse(initData))
 }
 ```
 

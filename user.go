@@ -1,4 +1,4 @@
-package twa
+package initdata
 
 // User describes user information:
 // https://core.telegram.org/bots/webapps#webappuser

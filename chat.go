@@ -1,4 +1,4 @@
-package twa
+package initdata
 
 const (
 	ChatTypeGroup      ChatType = "group"

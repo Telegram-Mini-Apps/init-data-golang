@@ -1,4 +1,4 @@
-package twa
+package initdata
 
 import (
 	"crypto/hmac"
