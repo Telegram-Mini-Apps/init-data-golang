@@ -27,11 +27,11 @@ import (
 // expIn - maximum init data lifetime. It is strongly recommended using this
 // parameter. In case, zero duration is less than 0, function does not check if
 // parameters are expired.
-func Validate(initData, token string, expIn time.Duration) (bool, error) {
+func Validate(initData, token string, expIn time.Duration) error {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
-		return false, ErrUnexpectedFormat
+		return ErrUnexpectedFormat
 	}
 
 	var (
@@ -61,7 +61,7 @@ func Validate(initData, token string, expIn time.Duration) (bool, error) {
 
 	// Sign is always required.
 	if hash == "" {
-		return false, ErrSignMissing
+		return ErrSignMissing
 	}
 
 	// In case, expiration time is passed, we do additional parameters check.
@@ -69,12 +69,12 @@ func Validate(initData, token string, expIn time.Duration) (bool, error) {
 		// In case, auth date is zero, it means, we can not check if parameters
 		// are expired.
 		if authDate.IsZero() {
-			return false, ErrAuthDateMissing
+			return ErrAuthDateMissing
 		}
 
 		// Check if init data is expired.
 		if authDate.Add(expIn).Before(time.Now()) {
-			return false, ErrExpired
+			return ErrExpired
 		}
 	}
 
@@ -90,9 +90,9 @@ func Validate(initData, token string, expIn time.Duration) (bool, error) {
 
 	// In case, our sign is not equal to found one, we should throw an error.
 	if hex.EncodeToString(impHmac.Sum(nil)) != hash {
-		return false, ErrSignInvalid
+		return ErrSignInvalid
 	}
-	return true, nil
+	return nil
 }
 
 // Parse converts passed init data presented as query string to InitData
