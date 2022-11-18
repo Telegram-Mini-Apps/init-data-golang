@@ -13,7 +13,7 @@ type ChatType = string
 // https://core.telegram.org/bots/webapps#webappchat
 type Chat struct {
 	// Unique identifier for this chat.
-	Id int64 `json:"id"`
+	ID int64 `json:"id"`
 
 	// Optional. URL of the chat’s photo. The photo can be in .jpeg or .svg
 	// formats. Only returned for Web Apps launched from the attachment menu.

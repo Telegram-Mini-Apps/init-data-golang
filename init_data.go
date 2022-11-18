@@ -30,7 +30,7 @@ type InitData struct {
 	// messages via the answerWebAppQuery method.
 	//
 	// See: https://core.telegram.org/bots/api#answerwebappquery
-	QueryId string `json:"query_id"`
+	QueryID string `json:"query_id"`
 
 	// An object containing data about the chat partner of the current user in
 	// the chat where the bot was launched via the attachment menu.
