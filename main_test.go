@@ -15,7 +15,6 @@ type testValidate struct {
 	initData    string
 	expIn       time.Duration
 	expectedErr error
-	expectedRes bool
 }
 
 type testParse struct {
@@ -26,8 +25,7 @@ type testParse struct {
 
 var testsValidate = []testValidate{
 	{
-		initData:    defaultInitData,
-		expectedRes: true,
+		initData: defaultInitData,
 	},
 	{
 		initData:    defaultInitData,
@@ -66,7 +64,7 @@ var testsParse = []testParse{
 	{
 		initData: defaultInitData,
 		expectedRes: &InitData{
-			QueryId: "AAHdF6IQAAAAAN0XohDhrOrc",
+			QueryID: "AAHdF6IQAAAAAN0XohDhrOrc",
 			User: &User{
 				Id:           279058397,
 				FirstName:    "Vladislav",
@@ -84,10 +82,8 @@ var testsParse = []testParse{
 
 func TestValidate(t *testing.T) {
 	for _, test := range testsValidate {
-		if ok, err := Validate(test.initData, token, test.expIn); err != test.expectedErr {
+		if err := Validate(test.initData, token, test.expIn); err != test.expectedErr {
 			t.Errorf("expected error to be %q. Received %q", test.expectedErr, err)
-		} else if ok != test.expectedRes {
-			t.Errorf("expected result to be %t. Received %t", test.expectedRes, ok)
 		}
 	}
 }
