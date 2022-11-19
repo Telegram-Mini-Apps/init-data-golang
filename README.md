@@ -29,7 +29,7 @@ func main() {
 	// Telegram Bot secret key.
 	token := "627618978:amnnncjocxKJf"
 
-	// Define how long since init data generation date they are valid.
+	// Define how long since init data generation date it is valid.
 	expIn := 24 * time.Hour
 
 	// Will return error in case, init data is invalid. To see,
