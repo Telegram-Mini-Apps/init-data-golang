@@ -24,9 +24,9 @@ import (
 //
 // initData - init data passed from application;
 // token - TWA bot secret token which was used to create init data;
-// expIn - maximum init data lifetime. It is strongly recommended using this
-// parameter. In case, zero duration is less than 0, function does not check if
-// parameters are expired.
+// expIn - maximum init data lifetime. It is strongly recommended to use this
+// parameter. In case, exp duration is less than or equal to 0, function does
+// not check if parameters are expired.
 func Validate(initData, token string, expIn time.Duration) error {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
