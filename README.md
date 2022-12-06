@@ -1,7 +1,7 @@
 # init-data-golang
 
 Package which provides utilities to work with Telegram Web Apps init data.
-To learn more, what init data is, visit its [documentation](../launch-params/init-data/about.md).
+To learn more, what init data is, visit its [documentation](https://telegram-web-apps.github.io/twa/docs/launch-params/init-data/about).
 
 ## Installation
 
