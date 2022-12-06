@@ -7,9 +7,10 @@ type User struct {
 	FirstName string `json:"first_name"`
 
 	// A unique identifier for the user or bot.
-	Id int64 `json:"id"`
+	ID int64 `json:"id"`
 
-	// Optional. True, if this user is a bot. Returned in the `receiver` field only.
+	// Optional. True, if this user is a bot. Returned in the `receiver` field
+	// only.
 	IsBot bool `json:"is_bot"`
 
 	// Optional. True, if this user is a Telegram Premium user.
@@ -31,5 +32,5 @@ type User struct {
 	// Optional. URL of the user’s profile photo. The photo can be in .jpeg or
 	// .svg formats. Only returned for Web Apps launched from the
 	// attachment menu.
-	PhotoUrl string `json:"photo_url"`
+	PhotoURL string `json:"photo_url"`
 }

@@ -1,11 +1,6 @@
 package initdata
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"sort"
 	"strconv"
@@ -81,51 +76,9 @@ func Validate(initData, token string, expIn time.Duration) error {
 	// According to docs, we sort all the pairs in alphabetical order.
 	sort.Strings(pairs)
 
-	// Compute sign.
-	skHmac := hmac.New(sha256.New, []byte("WebAppData"))
-	skHmac.Write([]byte(token))
-
-	impHmac := hmac.New(sha256.New, skHmac.Sum(nil))
-	impHmac.Write([]byte(strings.Join(pairs, "\n")))
-
 	// In case, our sign is not equal to found one, we should throw an error.
-	if hex.EncodeToString(impHmac.Sum(nil)) != hash {
+	if sign(strings.Join(pairs, "\n"), token) != hash {
 		return ErrSignInvalid
 	}
 	return nil
-}
-
-// Parse converts passed init data presented as query string to InitData
-// object.
-func Parse(initData string) (*InitData, error) {
-	// Parse passed init data as query string.
-	q, err := url.ParseQuery(initData)
-	if err != nil {
-		return nil, ErrUnexpectedFormat
-	}
-
-	// According to documentation, we could only meet such types as int64,
-	// string, or another object. So, we create
-	pairs := make([]string, 0, len(q))
-	for k, v := range q {
-		// Derive real value. We know that there can not be any arrays and value
-		// can be the only one.
-		val := v[0]
-		valFormat := "%q:%q"
-
-		// If passed value is valid in the context of JSON, it means, we could
-		// insert this value without formatting.
-		if json.Valid([]byte(val)) {
-			valFormat = "%q:%s"
-		}
-		pairs = append(pairs, fmt.Sprintf(valFormat, k, val))
-	}
-
-	// Unmarshal JSON to our custom structure.
-	var d InitData
-	jStr := fmt.Sprintf("{%s}", strings.Join(pairs, ","))
-	if err := json.Unmarshal([]byte(jStr), &d); err != nil {
-		return nil, ErrUnexpectedFormat
-	}
-	return &d, nil
 }

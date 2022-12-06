@@ -1,6 +1,8 @@
 package initdata
 
-import "time"
+import (
+	"time"
+)
 
 // InitData describes parsed initial data sent from TWA application. You can
 // find specification for all the parameters in the official documentation:
