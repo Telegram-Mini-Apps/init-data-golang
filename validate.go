@@ -19,10 +19,10 @@ import (
 //
 // initData - init data passed from application;
 // token - TWA bot secret token which was used to create init data;
-// expIn - maximum init data lifetime. It is strongly recommended to use this
+// deadline - maximum init data lifetime. It is strongly recommended to use this
 // parameter. In case, exp duration is less than or equal to 0, function does
 // not check if parameters are expired.
-func Validate(initData, token string, expIn time.Duration) error {
+func Validate(initData, token string, deadline time.Time) error {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
@@ -59,18 +59,12 @@ func Validate(initData, token string, expIn time.Duration) error {
 		return ErrSignMissing
 	}
 
-	// In case, expiration time is passed, we do additional parameters check.
-	if expIn > 0 {
-		// In case, auth date is zero, it means, we can not check if parameters
-		// are expired.
-		if authDate.IsZero() {
-			return ErrAuthDateMissing
-		}
+	if authDate.IsZero() {
+		return ErrAuthDateMissing
+	}
 
-		// Check if init data is expired.
-		if authDate.Add(expIn).Before(time.Now()) {
-			return ErrExpired
-		}
+	if !deadline.IsZero() && authDate.After(deadline) {
+		return ErrExpired
 	}
 
 	// According to docs, we sort all the pairs in alphabetical order.

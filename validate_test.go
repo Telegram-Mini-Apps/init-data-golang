@@ -12,7 +12,7 @@ const (
 
 type testValidate struct {
 	initData    string
-	expIn       time.Duration
+	deadline    time.Time
 	expectedErr error
 }
 
@@ -23,7 +23,7 @@ var testsValidate = []testValidate{
 	{
 		initData:    validateTestInitData,
 		expectedErr: ErrExpired,
-		expIn:       time.Second,
+		deadline:    time.Unix(1552771648, 0),
 	},
 	{
 		initData:    "here comes something wrong;",
@@ -36,12 +36,15 @@ var testsValidate = []testValidate{
 	{
 		initData:    "hash=abc",
 		expectedErr: ErrAuthDateMissing,
-		expIn:       time.Second,
+	},
+	{
+		initData:    "hash=abc",
+		expectedErr: ErrAuthDateMissing,
 	},
 	{
 		initData:    "hash=abc&auth_date=1662771917",
 		expectedErr: ErrExpired,
-		expIn:       time.Second,
+		deadline:    time.Unix(1552771648, 0),
 	},
 	{
 		initData:    validateTestInitData + "abc",
@@ -51,7 +54,7 @@ var testsValidate = []testValidate{
 
 func TestValidate(t *testing.T) {
 	for _, test := range testsValidate {
-		if err := Validate(test.initData, validateTestToken, test.expIn); err != test.expectedErr {
+		if err := Validate(test.initData, validateTestToken, test.deadline); err != test.expectedErr {
 			t.Errorf("expected error to be %q. Received %q", test.expectedErr, err)
 		}
 	}
