@@ -1,8 +1,14 @@
 package initdata
 
 // User describes user information:
-// https://core.telegram.org/bots/webapps#webappuser
+// https://docs.telegram-mini-apps.com/launch-parameters/init-data#user
 type User struct {
+	// Optional. True, if this user added the bot to the attachment menu.
+	AddedToAttachmentMenu bool `json:"added_to_attachment_menu"`
+
+	// Optional. True, if this user allowed the bot to message them.
+	AllowsWriteToPm bool `json:"allows_write_to_pm"`
+
 	// First name of the user or bot.
 	FirstName string `json:"first_name"`
 
@@ -24,9 +30,7 @@ type User struct {
 
 	// Optional. IETF language tag of the user's language. Returns in user
 	// field only.
-	//
-	// See: https://en.wikipedia.org/wiki/IETF_language_tag
-	// TODO: Specify expected values.
+	// https://en.wikipedia.org/wiki/IETF_language_tag
 	LanguageCode string `json:"language_code"`
 
 	// Optional. URL of the user’s profile photo. The photo can be in .jpeg or

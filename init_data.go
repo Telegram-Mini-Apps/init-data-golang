@@ -4,48 +4,53 @@ import (
 	"time"
 )
 
-// InitData describes parsed initial data sent from TWA application. You can
-// find specification for all the parameters in the official documentation:
-// https://core.telegram.org/bots/webapps#webappinitdata
+// InitData contains init data.
+// https://docs.telegram-mini-apps.com/launch-parameters/init-data#parameters-list
 type InitData struct {
-	// Init data generation date.
+	// The date the initialization data was created. Is a number representing a
+	// Unix timestamp.
 	AuthDateRaw int `json:"auth_date"`
 
-	// Optional. Time in seconds, after which a message can be sent via the
-	// `answerWebAppQuery` method.
-	//
-	// See: https://core.telegram.org/bots/api#answerwebappquery
+	// Optional. The number of seconds after which a message can be sent via
+	// the method answerWebAppQuery.
+	// https://core.telegram.org/bots/api#answerwebappquery
 	CanSendAfterRaw int `json:"can_send_after"`
 
-	// An object containing data about the chat where the bot was
-	// launched via the attachment menu. Returned for supergroups, channels
-	// and group chats – only for Web Apps launched via the attachment menu.
-	Chat *Chat `json:"chat"`
+	// Optional. An object containing information about the chat with the bot in
+	// which the Mini Apps was launched. It is returned only for Mini Apps
+	// opened through the attachment menu.
+	Chat Chat `json:"chat"`
 
-	// A hash of all passed parameters, which the bot server can use to
-	// check their validity.
-	//
-	// See: https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
+	// Optional. The type of chat from which the Mini Apps was opened.
+	// Returned only for applications opened by direct link.
+	ChatType ChatType `json:"chat_type"`
+
+	// Optional. A global identifier indicating the chat from which the Mini
+	// Apps was opened. Returned only for applications opened by direct link.
+	ChatInstance string `json:"chat_instance"`
+
+	// Initialization data signature.
+	// https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
 	Hash string `json:"hash"`
 
-	// A unique identifier for the Web App session, required for sending
-	// messages via the answerWebAppQuery method.
-	//
-	// See: https://core.telegram.org/bots/api#answerwebappquery
+	// Optional. The unique session ID of the Mini App. Used in the process of
+	// sending a message via the method answerWebAppQuery.
+	// https://core.telegram.org/bots/api#answerwebappquery
 	QueryID string `json:"query_id"`
 
-	// An object containing data about the chat partner of the current user in
-	// the chat where the bot was launched via the attachment menu.
-	// Returned only for private chats and only for Web Apps launched
-	// via the attachment menu.
-	Receiver *User `json:"receiver"`
+	// Optional. An object containing data about the chat partner of the current
+	// user in the chat where the bot was launched via the attachment menu.
+	// Returned only for private chats and only for Mini Apps launched via the
+	// attachment menu.
+	Receiver User `json:"receiver"`
 
-	// Optional. The value of the `startattach` parameter, passed via link. Only
-	// returned for Web Apps when launched from the attachment menu via link.
+	// Optional. The value of the startattach or startapp query parameter
+	// specified in the link. It is returned only for Mini Apps opened through
+	// the attachment menu.
 	StartParam string `json:"start_param"`
 
-	// An object containing data about the current user.
-	User *User `json:"user"`
+	// Optional. An object containing information about the current user.
+	User User `json:"user"`
 }
 
 // AuthDate returns AuthDateRaw as time.Time.

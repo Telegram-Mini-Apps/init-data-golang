@@ -12,3 +12,7 @@ go get github.com/telegram-mini-apps/init-data-golang
 ## Documentation
 
 You can find full package documentation [here](https://docs.telegram-mini-apps.com/packages/golang/init-data-golang).
+
+## GoDoc
+
+Package [GoDoc](https://pkg.go.dev/github.com/telegram-mini-apps/init-data-golang).

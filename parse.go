@@ -9,11 +9,11 @@ import (
 
 // Parse converts passed init data presented as query string to InitData
 // object.
-func Parse(initData string) (*InitData, error) {
+func Parse(initData string) (InitData, error) {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
-		return nil, ErrUnexpectedFormat
+		return InitData{}, ErrUnexpectedFormat
 	}
 
 	// According to documentation, we could only meet such types as int64,
@@ -37,7 +37,7 @@ func Parse(initData string) (*InitData, error) {
 	var d InitData
 	jStr := fmt.Sprintf("{%s}", strings.Join(pairs, ","))
 	if err := json.Unmarshal([]byte(jStr), &d); err != nil {
-		return nil, ErrUnexpectedFormat
+		return InitData{}, ErrUnexpectedFormat
 	}
-	return &d, nil
+	return d, nil
 }

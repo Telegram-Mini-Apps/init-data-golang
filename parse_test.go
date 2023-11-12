@@ -12,7 +12,7 @@ const (
 type testParse struct {
 	initData    string
 	expectedErr error
-	expectedRes *InitData
+	expectedRes InitData
 }
 
 var testsParse = []testParse{
@@ -22,9 +22,9 @@ var testsParse = []testParse{
 	},
 	{
 		initData: parseTestInitData,
-		expectedRes: &InitData{
+		expectedRes: InitData{
 			QueryID: "AAHdF6IQAAAAAN0XohDhrOrc",
-			User: &User{
+			User: User{
 				ID:           279058397,
 				FirstName:    "Vladislav",
 				LastName:     "Kibenko",
