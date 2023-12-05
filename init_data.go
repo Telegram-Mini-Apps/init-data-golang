@@ -27,7 +27,7 @@ type InitData struct {
 
 	// Optional. A global identifier indicating the chat from which the Mini
 	// Apps was opened. Returned only for applications opened by direct link.
-	ChatInstance string `json:"chat_instance"`
+	ChatInstance int64 `json:"chat_instance"`
 
 	// Initialization data signature.
 	// https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
