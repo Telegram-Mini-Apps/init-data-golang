@@ -7,6 +7,13 @@ import (
 	"strings"
 )
 
+var (
+	// List of properties which should always be interpreted as strings.
+	_stringProps = map[string]bool{
+		"start_param": true,
+	}
+)
+
 // Parse converts passed init data presented as query string to InitData
 // object.
 func Parse(initData string) (InitData, error) {
@@ -27,9 +34,10 @@ func Parse(initData string) (InitData, error) {
 
 		// If passed value is valid in the context of JSON, it means, we could
 		// insert this value without formatting.
-		if json.Valid([]byte(val)) {
+		if isString := _stringProps[k]; !isString && json.Valid([]byte(val)) {
 			valFormat = "%q:%s"
 		}
+
 		pairs = append(pairs, fmt.Sprintf(valFormat, k, val))
 	}
 
