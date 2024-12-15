@@ -28,12 +28,12 @@ var (
 // expIn - maximum init data lifetime. It is strongly recommended to use this
 // parameter. In case, exp duration is less than or equal to 0, function does
 // not check if parameters are expired.
-// isProd - true if the init data was issued in Telegram production environment;
+// isTest - true if the init data was issued in Telegram production environment;
 func ValidateThirdPartyWithEnv(
 	initData string,
 	botID int64,
 	expIn time.Duration,
-	isProd bool,
+	isTest bool,
 ) error {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
@@ -99,10 +99,10 @@ func ValidateThirdPartyWithEnv(
 	sort.Strings(pairs)
 
 	var publicKey []byte
-	if isProd {
-		publicKey = _telegramProdPublicKey
-	} else {
+	if isTest {
 		publicKey = _telegramTestPublicKey
+	} else {
+		publicKey = _telegramProdPublicKey
 	}
 
 	if !ed25519.Verify(
@@ -118,5 +118,5 @@ func ValidateThirdPartyWithEnv(
 // ValidateThirdParty performs validation described in the Validate3rdWithEnv function using
 // production environment.
 func ValidateThirdParty(initData string, botID int64, expIn time.Duration) error {
-	return ValidateThirdPartyWithEnv(initData, botID, expIn, true)
+	return ValidateThirdPartyWithEnv(initData, botID, expIn, false)
 }
