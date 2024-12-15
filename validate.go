@@ -10,15 +10,12 @@ import (
 
 // Validate validates passed init data. This method expects initData to be
 // passed in the exact raw format as it could be found
-// in window.Telegram.WebApp.initData. Returns true in case init data is
-// signed correctly, and it is allowed to trust it.
+// in window.Telegram.WebApp.initData.
 //
-// Current code is implementation of algorithmic code described in official
-// docs:
-// https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
+// Returns error if something is wrong with the passed init data. Nil otherwise.
 //
 // initData - init data passed from application;
-// token - TWA bot secret token which was used to create init data;
+// token - init data Telegram Bot issuer token;
 // expIn - maximum init data lifetime. It is strongly recommended to use this
 // parameter. In case, exp duration is less than or equal to 0, function does
 // not check if parameters are expired.
