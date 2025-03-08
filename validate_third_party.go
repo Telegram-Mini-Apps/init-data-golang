@@ -52,7 +52,7 @@ func ValidateThirdPartyWithEnv(
 
 	// Iterate over all key-value pairs of parsed parameters.
 	for k, v := range q {
-		// hash is ignored during this validation.
+		// hash is ignored during this type of validation.
 		if k == "hash" {
 			continue
 		}
@@ -67,10 +67,14 @@ func ValidateThirdPartyWithEnv(
 			)
 			continue
 		}
+
 		if k == "auth_date" {
-			if i, err := strconv.Atoi(v[0]); err == nil {
-				authDate = time.Unix(int64(i), 0)
+			i, err := strconv.ParseInt(v[0], 10, 64)
+			if err != nil {
+				return fmt.Errorf("parse auth_date to int64: %w: %w", err, ErrAuthDateInvalid)
 			}
+
+			authDate = time.Unix(i, 0)
 		}
 		// Append new pair.
 		pairs = append(pairs, k+"="+v[0])

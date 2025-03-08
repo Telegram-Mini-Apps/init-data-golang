@@ -46,6 +46,13 @@ func TestValidateThirdPartyAuthDateMissing(t *testing.T) {
 	}
 }
 
+func TestValidateThirdPartyAuthDateInvalid(t *testing.T) {
+	err := ValidateThirdParty("signature=abc&auth_date=test", 1, time.Second)
+	if !errors.Is(err, ErrAuthDateInvalid) {
+		t.Errorf("expected to receive %q. Received: %q", ErrAuthDateInvalid, err)
+	}
+}
+
 func TestValidateThirdPartySignInvalid(t *testing.T) {
 	err := ValidateThirdParty(_validateThirdPartyTestInitData+"a", 1, 0)
 	if !errors.Is(err, ErrSignInvalid) {
