@@ -46,7 +46,7 @@ func Validate(initData, token string, expIn time.Duration) error {
 		if k == "auth_date" {
 			i, err := strconv.ParseInt(v[0], 10, 64)
 			if err != nil {
-				return fmt.Errorf("parse auth_date to int: %w", err)
+				return fmt.Errorf("parse auth_date to int64: %w", err)
 			}
 
 			authDate = time.Unix(i, 0)
