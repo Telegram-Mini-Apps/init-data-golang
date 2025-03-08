@@ -1,6 +1,7 @@
 package initdata
 
 import (
+	"fmt"
 	"net/url"
 	"sort"
 	"strconv"
@@ -43,9 +44,12 @@ func Validate(initData, token string, expIn time.Duration) error {
 			continue
 		}
 		if k == "auth_date" {
-			if i, err := strconv.Atoi(v[0]); err == nil {
-				authDate = time.Unix(int64(i), 0)
+			i, err := strconv.ParseInt(v[0], 10, 64)
+			if err != nil {
+				return fmt.Errorf("parse auth_date to int64: %w: %w", err, ErrAuthDateInvalid)
 			}
+
+			authDate = time.Unix(i, 0)
 		}
 		// Append new pair.
 		pairs = append(pairs, k+"="+v[0])

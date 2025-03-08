@@ -1,6 +1,8 @@
 package initdata
 
 import (
+	"errors"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -47,11 +49,19 @@ var testsValidate = []testValidate{
 		initData:    validateTestInitData + "abc",
 		expectedErr: ErrSignInvalid,
 	},
+	{
+		initData:    "hash=abc&auth_date=test",
+		expectedErr: strconv.ErrSyntax,
+	},
+	{
+		initData:    "hash=abc&auth_date=test",
+		expectedErr: ErrAuthDateInvalid,
+	},
 }
 
 func TestValidate(t *testing.T) {
 	for _, test := range testsValidate {
-		if err := Validate(test.initData, validateTestToken, test.expIn); err != test.expectedErr {
+		if err := Validate(test.initData, validateTestToken, test.expIn); !errors.Is(err, test.expectedErr) {
 			t.Errorf("expected error to be %q. Received %q", test.expectedErr, err)
 		}
 	}
