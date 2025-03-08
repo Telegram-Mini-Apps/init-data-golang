@@ -53,6 +53,10 @@ var testsValidate = []testValidate{
 		initData:    "hash=abc&auth_date=test",
 		expectedErr: strconv.ErrSyntax,
 	},
+	{
+		initData:    "hash=abc&auth_date=test",
+		expectedErr: ErrAuthDateInvalid,
+	},
 }
 
 func TestValidate(t *testing.T) {
