@@ -20,7 +20,7 @@ func Parse(initData string) (InitData, error) {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
-		return InitData{}, ErrUnexpectedFormat
+		return InitData{}, fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
 	}
 
 	// According to documentation, we could only meet such types as int64,
@@ -45,7 +45,7 @@ func Parse(initData string) (InitData, error) {
 	var d InitData
 	jStr := fmt.Sprintf("{%s}", strings.Join(pairs, ","))
 	if err := json.Unmarshal([]byte(jStr), &d); err != nil {
-		return InitData{}, ErrUnexpectedFormat
+		return InitData{}, fmt.Errorf("unmarshal init data: %w: %w", err, ErrUnexpectedFormat)
 	}
 	return d, nil
 }

@@ -1,6 +1,7 @@
 package initdata
 
 import (
+	"errors"
 	"testing"
 	"time"
 )
@@ -35,7 +36,7 @@ var testsSignQueryString = []testSignQueryString{
 func TestSignQueryString(t *testing.T) {
 	for _, test := range testsSignQueryString {
 		hash, err := SignQueryString(test.initData, signTestToken, signTestAuthDate)
-		if err != test.expectedErr {
+		if !errors.Is(err, test.expectedErr) {
 			t.Errorf("expected error to be %q. Received %q", test.expectedErr, err)
 		}
 		if hash != signTestHash {
