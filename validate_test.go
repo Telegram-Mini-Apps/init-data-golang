@@ -2,6 +2,7 @@ package initdata
 
 import (
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -50,7 +51,11 @@ var testsValidate = []testValidate{
 	},
 	{
 		initData:    "hash=abc&auth_date=test",
-		expectedErr: ErrAuthDateInvalid,
+		expectedErr: strconv.ErrSyntax,
+	},
+	{
+		initData:    "hash=abc&auth_date=test",
+		expectedErr: strconv.ErrSyntax,
 	},
 }
 
