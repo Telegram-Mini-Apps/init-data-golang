@@ -38,7 +38,7 @@ func ValidateThirdPartyWithEnv(
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
-		return ErrUnexpectedFormat
+		return fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
 	}
 
 	var (

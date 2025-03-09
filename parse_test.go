@@ -1,6 +1,7 @@
 package initdata
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 )
@@ -42,7 +43,7 @@ var testsParse = []testParse{
 
 func TestParse(t *testing.T) {
 	for _, test := range testsParse {
-		if data, err := Parse(test.initData); err != test.expectedErr {
+		if data, err := Parse(test.initData); !errors.Is(err, test.expectedErr) {
 			t.Errorf("expected error to be %q. \nReceived %q", test.expectedErr, err)
 		} else if !reflect.DeepEqual(data, test.expectedRes) {
 			t.Errorf("expected result to be %+v. \nReceived %+v", test.expectedRes, data)
