@@ -69,7 +69,7 @@ func Validate(initData, token string, expIn time.Duration) error {
 		}
 
 		// Check if init data is expired.
-		if authDate.Add(expIn).Before(time.Now()) {
+		if authDate.Add(expIn).Before(time.Now().UTC()) {
 			return ErrExpired
 		}
 	}
