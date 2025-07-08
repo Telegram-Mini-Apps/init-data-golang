@@ -94,7 +94,7 @@ func ValidateThirdPartyWithEnv(
 		}
 
 		// Check if init data is expired.
-		if authDate.Add(expIn).Before(time.Now()) {
+		if authDate.Add(expIn).Before(time.Now().UTC()) {
 			return ErrExpired
 		}
 	}
