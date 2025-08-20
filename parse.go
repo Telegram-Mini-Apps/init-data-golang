@@ -16,11 +16,11 @@ var (
 
 // Parse converts passed init data presented as query string to InitData
 // object.
-func Parse(initData string) (InitData, error) {
+func Parse(initData string) (*InitData, error) {
 	// Parse passed init data as query string.
 	q, err := url.ParseQuery(initData)
 	if err != nil {
-		return InitData{}, fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
+		return nil, fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
 	}
 
 	// According to documentation, we could only meet such types as int64,
@@ -42,10 +42,10 @@ func Parse(initData string) (InitData, error) {
 	}
 
 	// Unmarshal JSON to our custom structure.
-	var d InitData
+	var d *InitData
 	jStr := fmt.Sprintf("{%s}", strings.Join(pairs, ","))
 	if err := json.Unmarshal([]byte(jStr), &d); err != nil {
-		return InitData{}, fmt.Errorf("unmarshal init data: %w: %w", err, ErrUnexpectedFormat)
+		return nil, fmt.Errorf("unmarshal init data: %w: %w", err, ErrUnexpectedFormat)
 	}
 	return d, nil
 }

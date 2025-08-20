@@ -5,7 +5,7 @@ import (
 )
 
 // InitData contains init data.
-// https://docs.telegram-mini-apps.com/launch-parameters/init-data#parameters-list
+// https://docs.telegram-mini-apps.com/platform/init-data
 type InitData struct {
 	// The date the initialization data was created. Is a number representing a
 	// Unix timestamp.
@@ -14,20 +14,20 @@ type InitData struct {
 	// Optional. The number of seconds after which a message can be sent via
 	// the method answerWebAppQuery.
 	// https://core.telegram.org/bots/api#answerwebappquery
-	CanSendAfterRaw int `json:"can_send_after"`
+	CanSendAfterRaw int `json:"can_send_after,omitempty"`
 
 	// Optional. An object containing information about the chat with the bot in
 	// which the Mini Apps was launched. It is returned only for Mini Apps
 	// opened through the attachment menu.
-	Chat Chat `json:"chat"`
+	Chat *Chat `json:"chat,omitempty"`
 
 	// Optional. The type of chat from which the Mini Apps was opened.
 	// Returned only for applications opened by direct link.
-	ChatType ChatType `json:"chat_type"`
+	ChatType ChatType `json:"chat_type,omitempty"`
 
 	// Optional. A global identifier indicating the chat from which the Mini
 	// Apps was opened. Returned only for applications opened by direct link.
-	ChatInstance int64 `json:"chat_instance"`
+	ChatInstance int64 `json:"chat_instance,omitempty"`
 
 	// Initialization data signature.
 	// https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
@@ -36,21 +36,21 @@ type InitData struct {
 	// Optional. The unique session ID of the Mini App. Used in the process of
 	// sending a message via the method answerWebAppQuery.
 	// https://core.telegram.org/bots/api#answerwebappquery
-	QueryID string `json:"query_id"`
+	QueryID string `json:"query_id,omitempty"`
 
 	// Optional. An object containing data about the chat partner of the current
 	// user in the chat where the bot was launched via the attachment menu.
 	// Returned only for private chats and only for Mini Apps launched via the
 	// attachment menu.
-	Receiver User `json:"receiver"`
+	Receiver *User `json:"receiver,omitempty"`
 
 	// Optional. The value of the startattach or startapp query parameter
 	// specified in the link. It is returned only for Mini Apps opened through
 	// the attachment menu.
-	StartParam string `json:"start_param"`
+	StartParam string `json:"start_param,omitempty"`
 
 	// Optional. An object containing information about the current user.
-	User User `json:"user"`
+	User *User `json:"user,omitempty"`
 }
 
 // AuthDate returns AuthDateRaw as time.Time.
