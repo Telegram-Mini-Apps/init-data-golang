@@ -42,10 +42,10 @@ func Parse(initData string) (*InitData, error) {
 	}
 
 	// Unmarshal JSON to our custom structure.
-	var d *InitData
+	var d InitData
 	jStr := fmt.Sprintf("{%s}", strings.Join(pairs, ","))
 	if err := json.Unmarshal([]byte(jStr), &d); err != nil {
 		return nil, fmt.Errorf("unmarshal init data: %w: %w", err, ErrUnexpectedFormat)
 	}
-	return d, nil
+	return &d, nil
 }
