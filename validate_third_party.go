@@ -59,12 +59,10 @@ func ValidateThirdPartyWithEnv(
 
 		// Store found signature.
 		if k == "signature" {
-			signature, _ = base64.URLEncoding.DecodeString(
-				// Signature is base64-encoded. We append padding by ourselves as long Telegram's server
-				// incorrectly creates a base64 string, but GoLang intolerant to this and requires strict
-				// format compliance.
-				v[0] + strings.Repeat("=", 4-len(v[0])%4),
-			)
+			signature, err = base64.RawURLEncoding.DecodeString(v[0])
+			if err != nil {
+				return fmt.Errorf("decode signature: %w: %w", err, ErrSignInvalid)
+			}
 			continue
 		}
 
