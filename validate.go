@@ -2,7 +2,6 @@ package initdata
 
 import (
 	"fmt"
-	"net/url"
 	"sort"
 	"strconv"
 	"strings"
@@ -22,9 +21,9 @@ import (
 // not check if parameters are expired.
 func Validate(initData, token string, expIn time.Duration) error {
 	// Parse passed init data as query string.
-	q, err := url.ParseQuery(initData)
+	q, err := parseValidationQuery(initData)
 	if err != nil {
-		return fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
+		return err
 	}
 
 	var (

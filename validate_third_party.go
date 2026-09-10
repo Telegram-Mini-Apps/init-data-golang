@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"net/url"
 	"sort"
 	"strconv"
 	"strings"
@@ -36,9 +35,9 @@ func ValidateThirdPartyWithEnv(
 	isTest bool,
 ) error {
 	// Parse passed init data as query string.
-	q, err := url.ParseQuery(initData)
+	q, err := parseValidationQuery(initData)
 	if err != nil {
-		return fmt.Errorf("parse init data as query: %w: %w", err, ErrUnexpectedFormat)
+		return err
 	}
 
 	var (
