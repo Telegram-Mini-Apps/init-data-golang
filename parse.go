@@ -77,12 +77,12 @@ func (d *InitData) fieldByName(name string) any {
 func decodeValue(name, value string, target any) error {
 	switch t := target.(type) {
 	case *int:
-		if n, err := strconv.Atoi(value); err == nil && isJSONInteger(value) {
+		if n, err := strconv.Atoi(value); err == nil && json.Valid([]byte(value)) {
 			*t = n
 			return nil
 		}
 	case *int64:
-		if n, err := strconv.ParseInt(value, 10, 64); err == nil && isJSONInteger(value) {
+		if n, err := strconv.ParseInt(value, 10, 64); err == nil && json.Valid([]byte(value)) {
 			*t = n
 			return nil
 		}
@@ -105,14 +105,4 @@ func decodeValue(name, value string, target any) error {
 		return fmt.Errorf("property %q: cannot use string value as %T", name, target)
 	}
 	return nil
-}
-
-// isJSONInteger reports whether value is an integer written the way JSON
-// allows it: an optional minus sign and digits without leading zeros.
-func isJSONInteger(value string) bool {
-	digits := strings.TrimPrefix(value, "-")
-	if digits == "" || digits[0] == '+' {
-		return false
-	}
-	return digits == "0" || digits[0] != '0'
 }
