@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 )
 
@@ -55,11 +56,40 @@ func SignQueryString(qs, key string, authDate time.Time) (string, error) {
 // Performs payload subscription. Payload itself slice of key-value pairs
 // joined with "\n".
 func sign(payload, key string) string {
+	signature := signBytes([]byte(payload), key)
+	return string(signature[:])
+}
+
+// signBytes returns the hex-encoded HMAC-SHA256 sign of payload.
+func signBytes(payload []byte, key string) [sha256.Size * 2]byte {
+	impHmac := hmac.New(sha256.New, secretKey(key))
+	impHmac.Write(payload)
+
+	var sum [sha256.Size]byte
+	var signature [sha256.Size * 2]byte
+	hex.Encode(signature[:], impHmac.Sum(sum[:0]))
+	return signature
+}
+
+type cachedSecretKey struct {
+	token  string
+	secret []byte
+}
+
+// lastSecretKey keeps the secret key derived from the last used token. Most
+// applications validate init data of a single bot, so the key is derived once.
+var lastSecretKey atomic.Value
+
+// secretKey returns HMAC-SHA256 of the bot token with "WebAppData" as a key.
+func secretKey(token string) []byte {
+	if cached, ok := lastSecretKey.Load().(*cachedSecretKey); ok && cached.token == token {
+		return cached.secret
+	}
+
 	skHmac := hmac.New(sha256.New, []byte("WebAppData"))
-	skHmac.Write([]byte(key))
+	skHmac.Write([]byte(token))
+	secret := skHmac.Sum(nil)
 
-	impHmac := hmac.New(sha256.New, skHmac.Sum(nil))
-	impHmac.Write([]byte(payload))
-
-	return hex.EncodeToString(impHmac.Sum(nil))
+	lastSecretKey.Store(&cachedSecretKey{token: token, secret: secret})
+	return secret
 }

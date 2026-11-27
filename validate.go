@@ -1,6 +1,7 @@
 package initdata
 
 import (
+	"crypto/hmac"
 	"fmt"
 	"sort"
 	"strconv"
@@ -77,7 +78,8 @@ func Validate(initData, token string, expIn time.Duration) error {
 	sort.Strings(pairs)
 
 	// In case, our sign is not equal to found one, we should throw an error.
-	if sign(strings.Join(pairs, "\n"), token) != hash {
+	expected := signBytes([]byte(strings.Join(pairs, "\n")), token)
+	if !hmac.Equal(expected[:], []byte(hash)) {
 		return ErrSignInvalid
 	}
 	return nil
